@@ -87,8 +87,25 @@ Todo lo que rompió hasta hoy cae en una de tres clases. El síntoma las separa:
 
 - Estado `3` (ERROR) con `TypeError: … is not a function`,
   `is not an object or null`, o `class heritage … is not an object`.
-- Se verifica contra el GIR de la versión instalada, que es la fuente de verdad
-  cuando no hay `python3-gi`:
+- Se comprueba contra el namespace cargado, que es la respuesta exacta:
+
+  ```bash
+  GI_TYPELIB_PATH=/usr/lib/mutter-51:/usr/lib/gnome-shell python3 -c "
+  import gi
+  gi.require_version('Shell','51'); gi.require_version('Clutter','51')
+  from gi.repository import Shell, Clutter
+  print('GLSLEffect', hasattr(Shell,'GLSLEffect'))
+  print('get_default_backend', hasattr(Clutter,'get_default_backend'))
+  print([n for n in dir(Shell) if n.endswith('Effect')])"
+  ```
+
+  `dir(Shell)` además te dice **qué quedó** (`BlurEffect`,
+  `InvertLightnessEffect`), que es de donde sale el reemplazo.
+
+  Sin `GI_TYPELIB_PATH` esto falla con `Namespace Clutter not available` — y
+  eso **no** significa que falte `python3-gi`: los typelibs del shell viven en
+  `/usr/lib/mutter-51` y `/usr/lib/gnome-shell`, fuera de la ruta del python del
+  sistema. Plan B, si no hay `gi`: leer el `.gir` directamente.
 
   ```bash
   grep -n "get_default_backend\|GLSLEffect" /usr/lib/*/Clutter-*.gir /usr/lib/*/Shell-*.gir
