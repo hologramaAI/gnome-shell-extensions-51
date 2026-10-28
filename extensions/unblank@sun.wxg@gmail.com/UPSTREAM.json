@@ -1,0 +1,40 @@
+{
+  "uuid": "unblank@sun.wxg@gmail.com",
+  "name": "Unblank lock screen",
+  "version": 41,
+  "version_name": null,
+  "shell_version": [
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/sunwxg/gnome-shell-extension-unblank",
+  "captured_at": "2026-10-28T13:43:50-04:00",
+  "tree_sha256": "87262834b524cbccbfac9c509dafcdcfab2088f9c457633a9bc53f9062ecbb34",
+  "gnome_org_pk": 1414,
+  "gnome_org_name": "Unblank lock screen",
+  "gnome_org_shell_versions": [
+    "3.26",
+    "3.28",
+    "3.30",
+    "3.32",
+    "3.34",
+    "3.36",
+    "3.38",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "gnome_org_latest_51": {
+    "pk": 76902,
+    "version": 41
+  }
+}

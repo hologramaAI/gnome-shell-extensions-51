@@ -1,0 +1,26 @@
+{
+  "uuid": "desktop-widgets@NiffirgkcaJ.github.com",
+  "name": "Desktop Widgets",
+  "version": 4,
+  "version_name": null,
+  "shell_version": [
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/NiffirgkcaJ/desktop-widgets",
+  "captured_at": "2026-10-28T13:43:49-04:00",
+  "tree_sha256": "83be2509cb80917c78f79206baeb7350646be29adf90a87255406d8c464f4b05",
+  "gnome_org_pk": 9071,
+  "gnome_org_name": "Desktop Widgets",
+  "gnome_org_shell_versions": [
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "gnome_org_latest_51": null
+}

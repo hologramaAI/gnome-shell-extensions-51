@@ -1,0 +1,34 @@
+{
+  "uuid": "sysmonitor@talhasiddique7",
+  "name": "System Monitor",
+  "version": 10,
+  "version_name": null,
+  "shell_version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://extensions.gnome.org/extension/9838/system-monitor/",
+  "captured_at": "2026-10-28T13:43:50-04:00",
+  "tree_sha256": "b369f62c563a0c7830a6ece4a93789940eb083ea244b4b63d6e017635175ded5",
+  "gnome_org_pk": 9838,
+  "gnome_org_name": "System Monitor",
+  "gnome_org_shell_versions": [
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "gnome_org_latest_51": null
+}

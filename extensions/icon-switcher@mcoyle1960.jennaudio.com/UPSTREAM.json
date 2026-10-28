@@ -1,0 +1,26 @@
+{
+  "uuid": "icon-switcher@mcoyle1960.jennaudio.com",
+  "name": "Icon Theme Switcher",
+  "version": 4,
+  "version_name": null,
+  "shell_version": [
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/mcoyle1960/icon-switcher",
+  "captured_at": "2026-10-28T13:43:49-04:00",
+  "tree_sha256": "9ff881d18797f606b70c2e650b998dd0ef45b7bae28afb6e2df768d443302120",
+  "gnome_org_pk": 9206,
+  "gnome_org_name": "Icon Theme Switcher",
+  "gnome_org_shell_versions": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "gnome_org_latest_51": null
+}

@@ -1,0 +1,33 @@
+{
+  "uuid": "dash2dock-lite@icedman.github.com",
+  "name": "Dash2Dock Animated",
+  "version": 92,
+  "version_name": null,
+  "shell_version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/icedman/dash2dock-lite",
+  "captured_at": "2026-10-28T13:43:49-04:00",
+  "tree_sha256": "d82e5d3b5c4786f68426f8cf96e24ba1e456f565452250ae4fa2ac1ef16b27f9",
+  "gnome_org_pk": 4994,
+  "gnome_org_name": "Dash2Dock Animated",
+  "gnome_org_shell_versions": [
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "gnome_org_latest_51": null
+}

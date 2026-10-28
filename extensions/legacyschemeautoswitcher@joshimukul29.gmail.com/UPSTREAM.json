@@ -1,0 +1,36 @@
+{
+  "uuid": "legacyschemeautoswitcher@joshimukul29.gmail.com",
+  "name": "Legacy (GTK3) Theme Scheme Auto Switcher",
+  "version": 13,
+  "version_name": null,
+  "shell_version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "url": "https://github.com/mukul29/legacy-theme-auto-switcher-gnome-extension",
+  "captured_at": "2026-10-28T13:43:50-04:00",
+  "tree_sha256": "fe55f4719369ade8463ef9d77194ccd611d2687af7973ea893a8391878cfbc70",
+  "gnome_org_pk": 4998,
+  "gnome_org_name": "Legacy (GTK3) Theme Scheme Auto Switcher",
+  "gnome_org_shell_versions": [
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50",
+    "51"
+  ],
+  "gnome_org_latest_51": {
+    "pk": 74907,
+    "version": 13
+  }
+}

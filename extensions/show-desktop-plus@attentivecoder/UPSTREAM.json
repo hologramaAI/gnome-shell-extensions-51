@@ -1,0 +1,28 @@
+{
+  "uuid": "show-desktop-plus@attentivecoder",
+  "name": "Show Desktop Plus",
+  "version": 8,
+  "version_name": null,
+  "shell_version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/attentivecoder/show-desktop-plus",
+  "captured_at": "2026-10-28T13:43:50-04:00",
+  "tree_sha256": "227b3bf82f4ca6ca0d5a65f4e4144287fda2b701bf5430daf48384bbff43f25e",
+  "gnome_org_pk": 9756,
+  "gnome_org_name": "Show Desktop Plus",
+  "gnome_org_shell_versions": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "gnome_org_latest_51": null
+}
