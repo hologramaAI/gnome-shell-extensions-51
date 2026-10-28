@@ -20,6 +20,11 @@ from pathlib import Path
 
 DEFAULT_TARGET = Path.home() / ".local/share/gnome-shell/extensions"
 
+# Los respaldos NO pueden vivir dentro del directorio de extensiones: el shell
+# escanea esa carpeta y cada copia produce un "UUID does not match directory
+# name" en el journal en cada arranque.
+DEFAULT_BACKUP = Path.home() / ".local/share/gnome-shell-extension-backups"
+
 
 def load_extensions(repo: Path, only: set[str] | None) -> list[Path]:
     found = []
@@ -43,13 +48,14 @@ def load_extensions(repo: Path, only: set[str] | None) -> list[Path]:
     return found
 
 
-def install_one(ext_dir: Path, target: Path, dry_run: bool) -> str:
+def install_one(ext_dir: Path, target: Path, backup_dir: Path, dry_run: bool) -> str:
     destination = target / ext_dir.name
     if destination.exists():
-        backup = destination.with_name(f"{destination.name}.bak-{datetime.now():%Y%m%d-%H%M%S}")
+        backup = backup_dir / f"{destination.name}.bak-{datetime.now():%Y%m%d-%H%M%S}"
         if not dry_run:
+            backup_dir.mkdir(parents=True, exist_ok=True)
             destination.rename(backup)
-        action = f"reemplaza (respaldo: {backup.name})"
+        action = f"reemplaza (respaldo: {backup})"
     else:
         action = "nueva"
     if not dry_run:
@@ -63,6 +69,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", default=Path(__file__).resolve().parent.parent, type=Path)
     parser.add_argument("--target", default=DEFAULT_TARGET, type=Path)
+    parser.add_argument("--backup-dir", default=DEFAULT_BACKUP, type=Path)
     parser.add_argument("--only", default=None, help="lista de uuid separados por coma")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -73,7 +80,7 @@ def main() -> int:
 
     print(f"destino: {args.target}")
     for ext_dir in extensions:
-        action = install_one(ext_dir, args.target, args.dry_run)
+        action = install_one(ext_dir, args.target, args.backup_dir, args.dry_run)
         print(f"  {'(dry-run) ' if args.dry_run else ''}{ext_dir.name:<58} {action}")
 
     print("\nCerrá sesión y volvé a entrar para que gnome-shell las cargue.")
