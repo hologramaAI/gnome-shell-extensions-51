@@ -92,12 +92,46 @@ GNOME. Cuando **otra** dock los reemplaza —`dash-to-dock` en esa sesión— de
 de existir y el `enable()` revienta, con lo que el shell deshabilita la
 extensión entera.
 
-Cambio: guardas en los dos puntos (`_background`, `__box`, `last_child`). Si
-faltan, la extensión arranca igual y se pierde sólo el atenuado del dash nativo.
+Cambio: una guarda en cada uno de los siete accesos (ver matriz 4.1). Si faltan,
+la extensión arranca igual y se pierde sólo el atenuado del dash nativo.
 
 **Conflicto de fondo:** `dash-to-dock` y `dash2dock-lite` son dos docks. No
 tiene sentido tener las dos activas. El parche evita el crash, no la
 duplicación en pantalla.
+
+### 4.1 · Matriz de casos
+
+`Main.overview.dash` tiene seis tripas distintas que la extensión da por hechas.
+Cada una es un punto de muerte propio, y **son secuenciales, no alternativos**:
+tapar la primera sólo mueve el stack a la siguiente. Por eso van todas en la
+misma rama y no una rama por caso — una rama que tape sólo la B sigue muriendo
+en la C.
+
+| Caso | Qué falta | Punto en `main` | Error si no hay guarda | Guarda en `cachyos-51` | ¿Medido? |
+|---|---|---|---|---|---|
+| **A** | el dash mismo | 145 | `Main.overview.dash is null` | 148 · `if (!dash) return` | no |
+| **B** | `dash._background` | 147 | `can't access property "style", …_background is undefined` | 154 | **sí**, sesión real (28 extensiones) |
+| **C** | `dash.__box` y `dash._box` | 151 | `box is undefined` al llamar `box.get_children()` | 160 | no — lo tapa la B |
+| **D** | `dash.last_child` | 733 | `can't access property "visible", …last_child is null` | 754 | **sí**, con `dash-to-dock` activa |
+| **E** | `dash._showAppsIcon` | 161 | `can't access property "opacity", …_showAppsIcon is undefined` | 173 | no — lo tapan B y C |
+| **F** | `dash._showAppsIcon.child` | 162 | `can't access property "reactive", …child is null` | 175 | no |
+| **G** | el dash, dentro de `enable()` | 206 | `can't access property "__box", Main.overview.dash is null` | 222 | no — mismo que A, más temprano en el ciclo |
+
+**Cómo se distingue un caso de otro, con el stack en la mano:**
+
+1. **La propiedad que nombra el mensaje** es el caso: `_background` → B,
+   `last_child` → D, `_showAppsIcon` → E. Es el discriminante directo.
+2. **La línea** dice el sitio de llamada. Ojo: A y G son el mismo fallo en dos
+   momentos del ciclo de vida, así que el número de línea (145 vs 206) es lo
+   único que los separa.
+3. **Qué dock está activa** explica el conjunto: `dash-to-dock` presente → D
+   (reemplaza el actor, no sus hijos); sesión real con muchas extensiones → B
+   (el dash se reconstruyó sin `_background`).
+4. **El orden de aparición** dice cuántas guardas faltan: si aparece B, faltan
+   B–F; si después de tapar B aparece `box is undefined`, faltaba C.
+
+Que C, E y F no se hayan visto **no** significa que no existan: eran
+inalcanzables mientras B moría primero. Aparecieron recién cuando se tapó B.
 
 ## 5 · `CoverflowAltTab` — `Shell.GLSLEffect` eliminado en 51
 
