@@ -13,10 +13,11 @@ hay medición, va marcado como *sin verificar*.
 |---|---|---|---|
 | §1 (parcial) | `dash2dock-lite`, `show-desktop-plus`, `icon-switcher` | **verificado** | `cachyos-51` |
 | §4 | `dash2dock-lite` (guardas) | **verificado en la laptop** — carga ACTIVE | `cachyos-51` |
-| §1 (parcial) | `CoverflowAltTab`, `clipboard-indicator`, `desktop-widgets` | en prueba | `desarrollo` |
+| §1 (parcial) | `clipboard-indicator`, `desktop-widgets` | en prueba | `desarrollo` |
+| §1 (parcial) | `CoverflowAltTab` | **verificado en la laptop** — carga `ACTIVE` en 51.1 con la validación de versión activa | `cachyos-51` |
 | §2 | `unblank` | **sin verificar** | `desarrollo` |
 | §3 | `clipboard-indicator` | **sin verificar** | `desarrollo` |
-| §5 | `CoverflowAltTab` | registro de la clase **verificado** acá; falta el re-login en la laptop | `desarrollo` |
+| §5 | `CoverflowAltTab` | **verificado en la laptop** — `state = 1` (ACTIVE) tras el re-login, `error` vacío | `cachyos-51` |
 
 **Sólo lo verificado está en `cachyos-51`.** Lo demás vive en `desarrollo` y no
 se instala. El porqué está en el README: un `metadata.json` sin su parche de
@@ -61,8 +62,15 @@ Las dos corridas necesitan `GI_TYPELIB_PATH` **y** `LD_LIBRARY_PATH` apuntando a
 `/usr/lib/mutter-51:/usr/lib/gnome-shell`; sin la segunda, la librería de Clutter
 no carga y `Clutter.OffscreenEffect` se resuelve como `void`.
 
-Sin verificar: que la extensión entera cargue en una sesión real con el shell
-51.1 — eso lo dice el re-login en la laptop, no esta prueba.
+Medido en la laptop el 28-oct-2026 (GNOME Shell 51.1, Wayland, `--mode=user`):
+se copiaron sólo `effects/radialShader.js` y `metadata.json` desde `desarrollo`, se
+verificó el archivo **en disco** por md5 contra el blob de la rama, se cerró sesión
+y se volvió a entrar. `GetExtensionInfo` devuelve `state = 1` (ACTIVE) y
+`error = ''`; el journal del arranque no registra una sola línea de la extensión.
+La viñeta se pierde —es la pérdida asumida del fallback—, la extensión no.
+
+Que la clase registre y que la extensión cargue son dos mediciones distintas y
+las dos están: la primera con gjs, la segunda en la sesión real.
 
 ## 1 · `shell-version` += `"51"` en el metadata
 
@@ -86,9 +94,13 @@ el mismo shell.
 `sysmonitor`, `legacyschemeautoswitcher` y `unblank` ya declaraban 51 y también
 están `ACTIVE` en `trabajo`.
 
-**Sin verificar:** `CoverflowAltTab` y `desktop-widgets` están instaladas en
-`trabajo` pero deshabilitadas, así que no hay evidencia de que carguen en 51.
-Se incluyen porque no hay nada mejor, pero si fallan, se sacan.
+**Sin verificar:** `desktop-widgets` está instalada en los dos nodos pero
+deshabilitada, así que no hay evidencia de que cargue en 51. Se incluye porque no
+hay nada mejor, pero si falla, se saca.
+
+`CoverflowAltTab` ya no está en este grupo: carga `ACTIVE` en la laptop con el
+`metadata.json` que declara 51 y la validación de versión en `false` (medido el
+28-oct-2026, ver §5).
 `clipboard-indicator` está `ERROR` en `trabajo` por la rotura de API del punto
 3; el `shell-version` no la arregla sola.
 
