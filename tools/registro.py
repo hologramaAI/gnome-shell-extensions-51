@@ -154,6 +154,16 @@ def main() -> int:
                         help="no escribe: sale con 1 si REGISTRO.md difiere")
     args = parser.parse_args()
 
+    # «Tocamos» se cuenta contra la copia literal del autor. Sin esa rama el
+    # registro no se puede armar: todas las filas dirían «sin parche» y el
+    # archivo quedaría mintiendo con toda confianza. Es lo que pasa al correr
+    # esto fuera de un repo git, por ejemplo sobre un tarball exportado.
+    if not branch_ref(args.repo):
+        print(f"no hay {UPSTREAM_BRANCH} ni origin/{UPSTREAM_BRANCH} en {args.repo}: "
+              "el registro se cuenta contra la copia literal, sin ella no se genera",
+              file=sys.stderr)
+        return 2
+
     content = build(args.repo)
     target = args.repo / "REGISTRO.md"
     if args.check:
