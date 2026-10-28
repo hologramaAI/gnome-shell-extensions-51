@@ -170,9 +170,13 @@ export default class Dash2DockLiteExt extends Extension {
       }
     });
 
-    Main.overview.dash._showAppsIcon.opacity = show ? 255 : 0;
-    Main.overview.dash._showAppsIcon.child.reactive = show;
-    Main.overview.dash._showAppsIcon.child.track_hover = show;
+    if (Main.overview.dash._showAppsIcon) {
+      Main.overview.dash._showAppsIcon.opacity = show ? 255 : 0;
+      if (Main.overview.dash._showAppsIcon.child) {
+        Main.overview.dash._showAppsIcon.child.reactive = show;
+        Main.overview.dash._showAppsIcon.child.track_hover = show;
+      }
+    }
   }
 
   enable() {
@@ -215,7 +219,9 @@ export default class Dash2DockLiteExt extends Extension {
       this._settingsKeys.setValue('animate-icons', true);
     }
 
-    Main.overview.dash.__box = Main.overview.dash._box;
+    if (Main.overview.dash) {
+      Main.overview.dash.__box = Main.overview.dash._box;
+    }
     this._showMainOverviewDash(false);
     this.docks = [];
 
@@ -743,11 +749,13 @@ export default class Dash2DockLiteExt extends Extension {
       'startup-complete',
       () => {
         // Mismo motivo que en _showMainOverviewDash: el dash pudo ser
-        // reemplazado por otra dock y no tener last_child.
-        if (Main.overview.dash?.last_child) {
-          Main.overview.dash.last_child.visible = false;
+        // reemplazado por otra dock y no tener last_child (ni existir).
+        if (Main.overview.dash) {
+          if (Main.overview.dash.last_child) {
+            Main.overview.dash.last_child.visible = false;
+          }
+          Main.overview.dash.opacity = 0;
         }
-        Main.overview.dash.opacity = 0;
         // fix for topbar not blurring
         this._updateBlurredBackground();
       },
