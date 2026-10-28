@@ -15,12 +15,12 @@ Regla: **lo que no se midió no aparece**. Una celda vacía significa
 | `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | 2026-10-28 | `5963dc6` 2026-10-28 | radialShader.js, metadata.json |
 | `clipboard-indicator@tudmotu.com` | 71 | 46, 47, 48, 49, 50 | 2026-10-28 | `521653b` 2026-10-28 | keyboard.js, metadata.json |
 | `dash2dock-lite@icedman.github.com` | 92 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | extension.js, metadata.json |
-| `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 46, 47, 48, 49, 50 | 2026-10-28 | sin parche | — |
+| `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 46, 47, 48, 49, 50 | 2026-10-28 | `f49fc62` 2026-10-28 | metadata.json |
 | `icon-switcher@mcoyle1960.jennaudio.com` | 4 | 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | metadata.json |
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 45, 46, 47, 48, 49, 50, 51 | 2026-10-28 | sin parche | — |
 | `show-desktop-plus@attentivecoder` | 8 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | metadata.json |
 | `sysmonitor@talhasiddique7` | 10 | 45, 46, 47, 48, 49, 50, 51 | 2026-10-28 | sin parche | — |
-| `unblank@sun.wxg@gmail.com` | 41 | 50, 51 | 2026-10-28 | sin parche | — |
+| `unblank@sun.wxg@gmail.com` | 41 | 50, 51 | 2026-10-28 | `f49fc62` 2026-10-28 | extension.js |
 
 «Tocamos» se cuenta contra `main`, la copia literal del autor.
 
@@ -60,8 +60,8 @@ Detalle:
 - `sysmonitor@talhasiddique7` → **trabajo**: ya declaraba 51
 - `sysmonitor@talhasiddique7` → **laptop**: ya declaraba 51; ACTIVE
 - `unblank@sun.wxg@gmail.com` → **trabajo**: ya declaraba 51; el parche de Main.screenShield no está instalado acá
-- `unblank@sun.wxg@gmail.com` → **laptop**: ACTIVE. El parche de Main.screenShield no está instalado: esta medición no lo prueba
+- `unblank@sun.wxg@gmail.com` → **laptop**: el extension.js instalado es byte a byte el de la rama (sha256 ac04a073…, blob b041669); state 1.0, error vacío. A las 15:40:42 el journal dice «Main.screenShield nunca apareció; queda inactiva»: acá el display manager es SDDM y canLock() da false, así que esa sesión nunca creó el escudo. Carga, no rompe; el camino del escudo no corrió
 - `legacyschemeautoswitcher@joshimukul29.gmail.com` → **trabajo**: ya declaraba 51
 - `legacyschemeautoswitcher@joshimukul29.gmail.com` → **laptop**: ya declaraba 51; ACTIVE
-- `desktop-widgets@NiffirgkcaJ.github.com` → **trabajo**: instalada y deshabilitada: nunca se cargó en ninguna de las dos máquinas
-- `desktop-widgets@NiffirgkcaJ.github.com` → **laptop**: metadata con 51 instalado; ahora carga ACTIVE con error vacío. Que pinte los widgets no está verificado
+- `desktop-widgets@NiffirgkcaJ.github.com` → **trabajo**: instalada y deshabilitada
+- `desktop-widgets@NiffirgkcaJ.github.com` → **laptop**: el metadata.json instalado es byte a byte el de la rama (sha256 75f9ab66…, blob 9db0d7b), con 46–51; state 1.0, error vacío y ninguna línea suya en el journal del arranque. Que pinte los widgets no está verificado
