@@ -142,13 +142,25 @@ export default class Dash2DockLiteExt extends Extension {
   }
 
   _showMainOverviewDash(show) {
+    // GNOME 51 / otra dock activa: Main.overview.dash puede haber sido
+    // reemplazado y no tener las tripas nativas (_background, __box). Antes
+    // esto tiraba TypeError y el shell deshabilitaba la extensión entera.
+    if (!Main.overview.dash) {
+      return;
+    }
+
     Main.overview.dash.opacity = show ? 255 : 0;
     // Main.overview.dash._background.opacity = show ? 255 : 0;
-    Main.overview.dash._background.style = show
-      ? ''
-      : 'background: transparent !important;';
+    if (Main.overview.dash._background) {
+      Main.overview.dash._background.style = show
+        ? ''
+        : 'background: transparent !important;';
+    }
 
     let box = Main.overview.dash.__box || Main.overview.dash._box;
+    if (!box) {
+      return;
+    }
     box.get_children().forEach((c) => {
       c.opacity = show ? 255 : 0;
       c.visible = show;
@@ -730,7 +742,11 @@ export default class Dash2DockLiteExt extends Extension {
     Main.layoutManager.connectObject(
       'startup-complete',
       () => {
-        Main.overview.dash.last_child.visible = false;
+        // Mismo motivo que en _showMainOverviewDash: el dash pudo ser
+        // reemplazado por otra dock y no tener last_child.
+        if (Main.overview.dash?.last_child) {
+          Main.overview.dash.last_child.visible = false;
+        }
         Main.overview.dash.opacity = 0;
         // fix for topbar not blurring
         this._updateBlurredBackground();

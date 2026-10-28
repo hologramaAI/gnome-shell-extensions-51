@@ -76,6 +76,44 @@ const backend = Clutter.get_default_backend
 
 Se deja el camino viejo para que el mismo archivo siga sirviendo en shell 50.
 
+## 4 · `dash2dock-lite` — asume las tripas del dash nativo
+
+Error medido en la laptop (journal, arranque del 28-oct 13:54):
+
+```
+TypeError: can't access property "style", Main.overview.dash._background is undefined
+  _showMainOverviewDash@.../extension.js:149:1
+  enable@.../extension.js:207:10
+```
+
+La extensión toca `Main.overview.dash._background` y
+`Main.overview.dash.last_child`, que son miembros internos del dash nativo de
+GNOME. Cuando **otra** dock los reemplaza —`dash-to-dock` en esa sesión— dejan
+de existir y el `enable()` revienta, con lo que el shell deshabilita la
+extensión entera.
+
+Cambio: guardas en los dos puntos (`_background`, `__box`, `last_child`). Si
+faltan, la extensión arranca igual y se pierde sólo el atenuado del dash nativo.
+
+**Conflicto de fondo:** `dash-to-dock` y `dash2dock-lite` son dos docks. No
+tiene sentido tener las dos activas. El parche evita el crash, no la
+duplicación en pantalla.
+
+## 5 · `CoverflowAltTab` — `Shell.GLSLEffect` eliminado en 51
+
+```
+TypeError: class heritage (intermediate value).GLSLEffect is not an object or null
+  @.../effects/radialShader.js:32:4
+```
+
+Verificado: `Shell-51.typelib` ya no exporta `GLSLEffect`. El módulo hace
+`class MyRadialShaderEffect extends Shell.GLSLEffect` al importarse, así que
+revienta antes de que la extensión exista.
+
+Cambio: si `Shell.GLSLEffect` no está, la clase hereda de `Clutter.OffscreenEffect`
+(que sí existe) y todos los uniforms se vuelven no-op. La extensión carga; se
+pierde sólo la viñeta del fondo.
+
 ## Lo que NO se toca
 
 - **`disable-extension-version-validation`.** En `trabajo` está en `true`, y es

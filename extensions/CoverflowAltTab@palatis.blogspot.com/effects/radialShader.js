@@ -1,6 +1,11 @@
 import Shell from 'gi://Shell'
 import GObject from 'gi://GObject'
 import Cogl from 'gi://Cogl'
+import Clutter from 'gi://Clutter'
+
+// GNOME 51 eliminó Shell.GLSLEffect. Si no está, la viñeta se vuelve un
+// efecto no-op en vez de tumbar la extensión al importar el módulo.
+const HAS_GLSL_EFFECT = typeof Shell.GLSLEffect === 'function';
 
 const VIGNETTE_DECLARATIONS = '                                              \
 uniform float brightness;                                                  \n\
@@ -29,20 +34,25 @@ export const MyRadialShaderEffect = GObject.registerClass({
             GObject.ParamFlags.READWRITE,
             0, 1, 0),
     },
-}, class MyRadialShaderEffect extends Shell.GLSLEffect {
+}, class MyRadialShaderEffect extends (HAS_GLSL_EFFECT ? Shell.GLSLEffect : Clutter.OffscreenEffect) {
     constructor(params) {
         super(params);
         this._brightness = undefined;
         this._sharpness = undefined;
 
-        this._brightnessLocation = this.get_uniform_location('brightness');
-        this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
+        if (HAS_GLSL_EFFECT) {
+            this._brightnessLocation = this.get_uniform_location('brightness');
+            this._sharpnessLocation = this.get_uniform_location('vignette_sharpness');
+        }
 
         this.brightness = 1.0;
         this.sharpness = 0.0;
     }
 
     vfunc_build_pipeline() {
+        if (!HAS_GLSL_EFFECT)
+            return;
+
         this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT,
             VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     }
@@ -55,8 +65,9 @@ export const MyRadialShaderEffect = GObject.registerClass({
         if (this._brightness === v)
             return;
         this._brightness = v;
-        this.set_uniform_float(this._brightnessLocation,
-            1, [this._brightness]);
+        if (HAS_GLSL_EFFECT)
+            this.set_uniform_float(this._brightnessLocation,
+                1, [this._brightness]);
         this.notify('brightness');
     }
 
@@ -68,8 +79,9 @@ export const MyRadialShaderEffect = GObject.registerClass({
         if (this._sharpness === v)
             return;
         this._sharpness = v;
-        this.set_uniform_float(this._sharpnessLocation,
-            1, [this._sharpness]);
+        if (HAS_GLSL_EFFECT)
+            this.set_uniform_float(this._sharpnessLocation,
+                1, [this._sharpness]);
         this.notify('sharpness');
     }
 });
