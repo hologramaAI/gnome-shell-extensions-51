@@ -36,6 +36,16 @@ y `tools/` son idénticos, y `PARCHE.md` dice en su tabla dónde vive cada parch
 Así no hay dos verdades que se contradigan ni conflictos al pasar un parche de
 una rama a la otra.
 
+De ahí sale la regla de trabajo: **la documentación se edita en `cachyos-51`,
+nunca en `desarrollo`.** Después `git rebase cachyos-51` en `desarrollo` baja el
+texto sin conflictos, porque los dos lados dicen lo mismo. Editar un `.md` en
+`desarrollo` obliga a copiarlo a mano a la estable, y a la tercera vez los dos
+textos ya no coinciden.
+
+Y `REGISTRO.md` va en **su propio commit**, después del commit que toca
+`extensions/`. Si van juntos, el registro se nombra a sí mismo: apunta a un
+`sha` que deja de existir en el rebase siguiente.
+
 Dos consecuencias que no son obvias:
 
 - **`main` no es «lo que funciona»**: es lo que el autor entregó. Puede estar
