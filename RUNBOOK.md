@@ -291,6 +291,7 @@ demostrar qué se copió y cuándo, y para saber si ya sacó release.
 | `status: 4` sin stack | la extensión nunca corrió | no buscar error; mirar el metadata |
 | Dos docks activas | crash de clase C, no de versión | una sola dock habilitada |
 | `gnome-extensions enable` de una recién copiada | "no existe": el shell no reescanea en caliente | re-login, o `gdbus` con `ReloadExtension` |
+| `gsettings set enabled-extensions` del experimento | con `XDG_CONFIG_HOME` del experimento escribe en una base de mentira; **sin** la variable escribe en la REAL y apaga extensiones que el dueño tenía prendidas | antes de escribir, `gsettings get org.gnome.shell enabled-extensions` y anotar la lista; probar el aislamiento con la variable siempre puesta |
 
 ---
 

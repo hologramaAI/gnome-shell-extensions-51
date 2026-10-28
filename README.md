@@ -10,7 +10,8 @@ descarta toda extensión cuyo `metadata.json` no declare `"51"` — aunque el
 código funcione perfectamente. El proveedor no ofrece alternativa, así que la
 generamos nosotros.
 
-**Si algo se rompió:** `python3 tools/diagnose.py` y después `RUNBOOK.md`. Ahí
+**Para retomar:** `PENDIENTES.md` dice qué falta, dónde vive y cómo se cierra cada
+punto. **Si algo se rompió:** `python3 tools/diagnose.py` y después `RUNBOOK.md`. Ahí
 está el procedimiento completo — qué mirar en qué orden, cómo distinguir una
 falla de versión de una de API y de una de convivencia entre extensiones, cómo
 aislar una extensión para probarla sola, y cómo dejar el parche.
