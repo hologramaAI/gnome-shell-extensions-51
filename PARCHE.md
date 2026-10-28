@@ -13,10 +13,10 @@ hay medición, va marcado como *sin verificar*.
 |---|---|---|---|
 | §1 (parcial) | `dash2dock-lite`, `show-desktop-plus`, `icon-switcher` | **verificado** | `cachyos-51` |
 | §4 | `dash2dock-lite` (guardas) | **verificado en la laptop** — carga ACTIVE | `cachyos-51` |
-| §1 (parcial) | `desktop-widgets` | en prueba | `desarrollo` |
+| §1 (parcial) | `desktop-widgets` | **verificado en la laptop** — carga `ACTIVE` en 51.1, journal sin una línea suya | `cachyos-51` |
 | §1 (parcial) | `CoverflowAltTab` | **verificado en la laptop** — carga `ACTIVE` en 51.1 con la validación de versión activa | `cachyos-51` |
 | §1 (parcial) | `clipboard-indicator` | **verificado en la laptop** — carga `ACTIVE` con el metadata de 51 | `cachyos-51` |
-| §2 | `unblank` | **sin verificar** | `desarrollo` |
+| §2 | `unblank` | **verificado cargando** en la laptop — `ACTIVE` sin error; el camino del escudo no corría ahí (SDDM), ver §2 | `cachyos-51` |
 | §3 | `clipboard-indicator` | **verificado en la laptop** — `ACTIVE`, y sin el parche `trabajo` sigue en `ERROR` | `cachyos-51` |
 | §5 | `CoverflowAltTab` | **verificado en la laptop** — `state = 1` (ACTIVE) tras el re-login, `error` vacío | `cachyos-51` |
 
@@ -95,9 +95,11 @@ el mismo shell.
 `sysmonitor`, `legacyschemeautoswitcher` y `unblank` ya declaraban 51 y también
 están `ACTIVE` en `trabajo`.
 
-**Sin verificar:** `desktop-widgets` está instalada en los dos nodos pero
-deshabilitada, así que no hay evidencia de que cargue en 51. Se incluye porque no
-hay nada mejor, pero si falla, se saca.
+`desktop-widgets` ya no está en este grupo: en la laptop el `metadata.json`
+instalado es byte a byte el de esta rama (`75f9ab66…`, blob `9db0d7b`), carga
+`state 1.0` con `error ''` y no deja una sola línea en el journal del arranque
+(medido el 28-oct-2026). El parche también cierra el salto de línea final que le
+faltaba al archivo del autor.
 
 `CoverflowAltTab` ya no está en este grupo: carga `ACTIVE` en la laptop con el
 `metadata.json` que declara 51 y la validación de versión en `false` (medido el
@@ -123,6 +125,29 @@ deshabilita sola.
 Cambio: `enable()` espera a que `Main.screenShield` exista, reintentando cada
 segundo hasta 30 veces, y `disable()` cancela ese reintento y tolera que
 `unblank` sea `null`. Sin cambios en la lógica de la extensión.
+
+**Lo que se midió (laptop, 28-oct-2026).** El `extension.js` instalado es byte a
+byte el de esta rama (`ac04a073…`, blob `b041669`) y el shell lo devuelve
+`state 1.0`, `enabled true`, `error ''`: ya no la deshabilita sola. El reintento
+se ve trabajar en el journal de ese arranque:
+
+```
+15:40:11–12  extensiones habilitadas
+15:40:42     [unblank] Main.screenShield nunca apareció; queda inactiva
+```
+
+**Lo que no se midió, y por qué no se puede acá.** En la 51, `main.js` crea el
+escudo sólo si `LoginManager.canLock()`, que consulta `org.gnome.DisplayManager`.
+La laptop corre **SDDM**, que publica otra interfaz; el shell lo dejó escrito:
+
+```
+15:34:25  Error registering session with GDM: ServiceUnknown: The name is not activatable
+```
+
+Sin GDM no hay `Main.screenShield` en toda la sesión, así que el camino que
+engancha el escudo no puede correr en esa máquina. El parche está probado por su
+lado de fallo —no romper, rendirse avisando— y no por su lado útil. Falta una
+sesión con GDM para verlo enganchar; está anotado en `PENDIENTES.md` §1.
 
 ## 3 · `clipboard-indicator` — `Clutter.get_default_backend()` eliminado
 

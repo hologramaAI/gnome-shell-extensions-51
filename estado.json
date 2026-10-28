@@ -81,7 +81,7 @@
       },
       "laptop": {
         "estado": "ACTIVE",
-        "nota": "ACTIVE. El parche de Main.screenShield no está instalado: esta medición no lo prueba"
+        "nota": "el extension.js instalado es byte a byte el de la rama (sha256 ac04a073…, blob b041669); state 1.0, error vacío. A las 15:40:42 el journal dice «Main.screenShield nunca apareció; queda inactiva»: acá el display manager es SDDM y canLock() da false, así que esa sesión nunca creó el escudo. Carga, no rompe; el camino del escudo no corrió"
       }
     },
     "legacyschemeautoswitcher@joshimukul29.gmail.com": {
@@ -97,11 +97,11 @@
     "desktop-widgets@NiffirgkcaJ.github.com": {
       "trabajo": {
         "estado": "INITIALIZED",
-        "nota": "instalada y deshabilitada: nunca se cargó en ninguna de las dos máquinas"
+        "nota": "instalada y deshabilitada"
       },
       "laptop": {
         "estado": "ACTIVE",
-        "nota": "metadata con 51 instalado; ahora carga ACTIVE con error vacío. Que pinte los widgets no está verificado"
+        "nota": "el metadata.json instalado es byte a byte el de la rama (sha256 75f9ab66…, blob 9db0d7b), con 46–51; state 1.0, error vacío y ninguna línea suya en el journal del arranque. Que pinte los widgets no está verificado"
       }
     }
   }

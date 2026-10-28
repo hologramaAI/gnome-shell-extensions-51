@@ -71,12 +71,14 @@ autor publique algo nuevo. Todo cambio nuestro vive en `cachyos-51` o en
 | `sysmonitor@talhasiddique7` | 10 | 51 | **estable**: sin cambios, ya declaraba 51 |
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 51 | **estable**: sin cambios, ya declaraba 51 |
 | `clipboard-indicator@tudmotu.com` | 71 | 50 | **estable**: metadata + backend del contexto del stage; carga ACTIVE en la laptop (28-oct) |
-| `unblank@sun.wxg@gmail.com` | 41 | 51 | **literal** acá: el reintento de `screenShield` vive en `desarrollo` |
+| `unblank@sun.wxg@gmail.com` | 41 | 51 | **estable**: reintento de `screenShield`; carga `ACTIVE` en la laptop (28-oct), aunque ahí el escudo no llega a existir (SDDM) |
 | `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | **estable**: metadata + fallback de `GLSLEffect` con el `vfunc` guardado; carga ACTIVE en la laptop (28-oct) |
-| `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 50 | **literal**: nunca se cargó en ninguna máquina |
+| `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 50 | **estable**: sólo metadata; carga ACTIVE en la laptop (28-oct) |
 
-«Literal» significa que en la estable esa extensión está **exactamente** como la
-entregó el autor. No es un olvido: es que su parche todavía no está medido.
+**Las nueve están en la estable y las nueve cargan sin error en alguna máquina.**
+Las que dicen «sin cambios» es porque no hacía falta tocarlas: ya declaraban 51.
+Lo único que sigue sin ejercitarse es el camino útil de `unblank` bajo GDM — ver
+`PENDIENTES.md` §1.
 
 Cada carpeta trae `UPSTREAM.json` con el uuid, la versión, la URL del autor, el
 `pk` de extensions.gnome.org, qué versiones de shell publicó y un `sha256` del
