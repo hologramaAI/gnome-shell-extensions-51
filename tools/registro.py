@@ -105,8 +105,10 @@ def build(repo: Path) -> str:
             f"| `{uuid}` | {version} | {declared_up} | {snapshot} | {ours} | {touched} |"
         )
     lines.append("")
+    # Se nombra siempre `main`, exista o no localmente: el archivo tiene que dar
+    # igual en cualquier clon, y un clon de una sola rama sólo tiene origin/main.
     lines.append(
-        f"«Tocamos» se cuenta contra `{ref or UPSTREAM_BRANCH}`, la copia literal del autor."
+        f"«Tocamos» se cuenta contra `{UPSTREAM_BRANCH}`, la copia literal del autor."
     )
     lines.append("")
 

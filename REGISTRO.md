@@ -12,7 +12,7 @@ Regla: **lo que no se midió no aparece**. Una celda vacía significa
 
 | Extensión | Autor | Declara | Snapshot | Último cambio nuestro | Tocamos |
 |---|---|---|---|---|---|
-| `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | 2026-10-28 | `ef8af05` 2026-10-28 | radialShader.js, metadata.json |
+| `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | 2026-10-28 | `5963dc6` 2026-10-28 | radialShader.js, metadata.json |
 | `clipboard-indicator@tudmotu.com` | 71 | 46, 47, 48, 49, 50 | 2026-10-28 | sin parche | — |
 | `dash2dock-lite@icedman.github.com` | 92 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | extension.js, metadata.json |
 | `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 46, 47, 48, 49, 50 | 2026-10-28 | sin parche | — |
@@ -22,7 +22,7 @@ Regla: **lo que no se midió no aparece**. Una celda vacía significa
 | `sysmonitor@talhasiddique7` | 10 | 45, 46, 47, 48, 49, 50, 51 | 2026-10-28 | sin parche | — |
 | `unblank@sun.wxg@gmail.com` | 41 | 50, 51 | 2026-10-28 | sin parche | — |
 
-«Tocamos» se cuenta contra `origin/main`, la copia literal del autor.
+«Tocamos» se cuenta contra `main`, la copia literal del autor.
 
 ## Estado medido
 
