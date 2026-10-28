@@ -291,7 +291,34 @@ demostrar qué se copió y cuándo, y para saber si ya sacó release.
 | `status: 4` sin stack | la extensión nunca corrió | no buscar error; mirar el metadata |
 | Dos docks activas | crash de clase C, no de versión | una sola dock habilitada |
 | `gnome-extensions enable` de una recién copiada | "no existe": el shell no reescanea en caliente | re-login, o `gdbus` con `ReloadExtension` |
-| `gsettings set enabled-extensions` del experimento | con `XDG_CONFIG_HOME` del experimento escribe en una base de mentira; **sin** la variable escribe en la REAL y apaga extensiones que el dueño tenía prendidas | antes de escribir, `gsettings get org.gnome.shell enabled-extensions` y anotar la lista; probar el aislamiento con la variable siempre puesta |
+| `enabled-extensions` se pierde en un apagado | el 28-oct la lista pasó de 23 uuids a uno entre las 15:32:09 y las 15:34:32, con un reinicio en el medio: las ocho del repo quedaron INITIALIZED sin que nadie las apagara | antes de tocar nada, `gsettings get org.gnome.shell enabled-extensions` y **anotar la lista**; después de cada reboot, compararla |
+
+### Si `enabled-extensions` aparece vacía o recortada
+
+Pasó de verdad y no lo provocó ninguna orden: la lista se recortó sola en la
+ventana de un reinicio. Lo que **no** hay que hacer es reconstruirla de memoria.
+
+1. **Medir con el entorno limpio**, o se lee otra base dconf:
+
+   ```bash
+   env -u XDG_CONFIG_HOME -u XDG_DATA_HOME -u XDG_CACHE_HOME \
+     gsettings get org.gnome.shell enabled-extensions
+   env -u XDG_CONFIG_HOME -u XDG_DATA_HOME -u XDG_CACHE_HOME \
+     gsettings get org.gnome.shell disabled-extensions
+   ```
+
+2. **Recuperar la lista anterior con evidencia.** El `state.db` de Hermes guarda
+   las salidas de las rondas anteriores; una lectura hecha con el entorno limpio
+   es la fuente. Comparar lo recuperado contra lo instalado (`gnome-extensions
+   list --installed`) antes de escribirlo: una entrada colgada deja la clave
+   sucia y el shell se queja en cada arranque.
+
+3. **Escribir y comprobar.** `enabled-extensions` se aplica **en vivo**: no hace
+   falta re-login. A los pocos segundos, `tools/diagnose.py` tiene que dar
+   `ACTIVE` en todas y el journal no debe mostrar `JS ERROR`.
+
+4. **Guardar la base antes** de escribir (`dconf dump / > antes.txt`): dconf no
+   guarda historia, y sin ese archivo no hay vuelta atrás.
 
 ---
 

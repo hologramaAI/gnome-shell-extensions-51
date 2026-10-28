@@ -13,10 +13,11 @@ hay medición, va marcado como *sin verificar*.
 |---|---|---|---|
 | §1 (parcial) | `dash2dock-lite`, `show-desktop-plus`, `icon-switcher` | **verificado** | `cachyos-51` |
 | §4 | `dash2dock-lite` (guardas) | **verificado en la laptop** — carga ACTIVE | `cachyos-51` |
-| §1 (parcial) | `clipboard-indicator`, `desktop-widgets` | en prueba | `desarrollo` |
+| §1 (parcial) | `desktop-widgets` | en prueba | `desarrollo` |
 | §1 (parcial) | `CoverflowAltTab` | **verificado en la laptop** — carga `ACTIVE` en 51.1 con la validación de versión activa | `cachyos-51` |
+| §1 (parcial) | `clipboard-indicator` | **verificado en la laptop** — carga `ACTIVE` con el metadata de 51 | `cachyos-51` |
 | §2 | `unblank` | **sin verificar** | `desarrollo` |
-| §3 | `clipboard-indicator` | **sin verificar** | `desarrollo` |
+| §3 | `clipboard-indicator` | **verificado en la laptop** — `ACTIVE`, y sin el parche `trabajo` sigue en `ERROR` | `cachyos-51` |
 | §5 | `CoverflowAltTab` | **verificado en la laptop** — `state = 1` (ACTIVE) tras el re-login, `error` vacío | `cachyos-51` |
 
 **Sólo lo verificado está en `cachyos-51`.** Lo demás vive en `desarrollo` y no
@@ -101,8 +102,10 @@ hay nada mejor, pero si falla, se saca.
 `CoverflowAltTab` ya no está en este grupo: carga `ACTIVE` en la laptop con el
 `metadata.json` que declara 51 y la validación de versión en `false` (medido el
 28-oct-2026, ver §5).
-`clipboard-indicator` está `ERROR` en `trabajo` por la rotura de API del punto
-3; el `shell-version` no la arregla sola.
+`clipboard-indicator` carga `ACTIVE` en la laptop con el metadata de 51 **y** el
+parche del §3 (medido el 28-oct-2026); en `trabajo`, sin ese parche, sigue en
+`ERROR`. El `shell-version` solo no la arreglaba: por eso los dos cambios van
+juntos y en la misma rama.
 
 ## 2 · `unblank` — `Main.screenShield` nulo al habilitar
 
@@ -144,6 +147,13 @@ const backend = Clutter.get_default_backend
 ```
 
 Se deja el camino viejo para que el mismo archivo siga sirviendo en shell 50.
+
+Verificado en la laptop el 28-oct-2026 (GNOME Shell 51.1, Wayland): el
+`keyboard.js` instalado coincide por md5 con el de la rama, la extensión carga
+`ACTIVE` con `error` vacío y el journal no registra `JS ERROR`. El control es el
+nodo `trabajo`: ahí corre el archivo literal y el estado es `ERROR` con el
+`TypeError` de arriba. La diferencia entre los dos nodos es el parche, no otra
+cosa.
 
 ## 4 · `dash2dock-lite` — asume las tripas del dash nativo
 

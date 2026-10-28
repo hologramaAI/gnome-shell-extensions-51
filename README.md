@@ -70,7 +70,7 @@ autor publique algo nuevo. Todo cambio nuestro vive en `cachyos-51` o en
 | `icon-switcher@mcoyle1960.jennaudio.com` | 4 | 50 | **estable**: sólo metadata; corre ACTIVE en 51.1 |
 | `sysmonitor@talhasiddique7` | 10 | 51 | **estable**: sin cambios, ya declaraba 51 |
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 51 | **estable**: sin cambios, ya declaraba 51 |
-| `clipboard-indicator@tudmotu.com` | 71 | 50 | **literal** acá: el arreglo de `get_default_backend` vive en `desarrollo` |
+| `clipboard-indicator@tudmotu.com` | 71 | 50 | **estable**: metadata + backend del contexto del stage; carga ACTIVE en la laptop (28-oct) |
 | `unblank@sun.wxg@gmail.com` | 41 | 51 | **literal** acá: el reintento de `screenShield` vive en `desarrollo` |
 | `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | **estable**: metadata + fallback de `GLSLEffect` con el `vfunc` guardado; carga ACTIVE en la laptop (28-oct) |
 | `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 50 | **literal**: nunca se cargó en ninguna máquina |
