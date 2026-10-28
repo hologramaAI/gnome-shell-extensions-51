@@ -28,7 +28,7 @@ documentado en `PARCHE.md`.
 | `dash2dock-lite@icedman.github.com` | 92 | 50 | sí, verificado en el nodo `trabajo` |
 | `show-desktop-plus@attentivecoder` | 8 | 50 | sí, verificado |
 | `icon-switcher@mcoyle1960.jennaudio.com` | 4 | 50 | sí, verificado |
-| `clipboard-indicator@tudmotu.com` | 71 | 50 | sí, verificado |
+| `clipboard-indicator@tudmotu.com` | 71 | 50 | con parche (backend de Clutter) |
 | `sysmonitor@talhasiddique7` | 10 | 51 | sí, verificado |
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 51 | sí, verificado |
 | `unblank@sun.wxg@gmail.com` | 41 | 51 | con parche (`Main.screenShield` nulo) |
