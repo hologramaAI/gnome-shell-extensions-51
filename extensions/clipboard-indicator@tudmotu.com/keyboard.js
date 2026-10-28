@@ -6,7 +6,13 @@ export class Keyboard {
     #contentPurpose;
 
     constructor () {
-        let seat = Clutter.get_default_backend().get_default_seat();
+        // GNOME 51 quitó Clutter.get_default_backend(). El backend ahora sale
+        // del contexto del stage (mismo camino que usa tilingshell en 51);
+        // el camino viejo se conserva para shell <= 50.
+        const backend = Clutter.get_default_backend
+            ? Clutter.get_default_backend()
+            : global.stage.get_context().get_backend();
+        let seat = backend.get_default_seat();
         this.#device = seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 
         Main.inputMethod.connectObject('notify::content-purpose', (method) => {
