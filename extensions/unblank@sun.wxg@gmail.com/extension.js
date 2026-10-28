@@ -273,14 +273,54 @@ export default class PanelScrollExtension extends Extension {
 
         if (enabled)
             return;
-        unblank = new Unblank(this._settings);
-        unblank.enable();
-        enabled = true;
 
+        // GNOME 51: en un arranque lento, o en modo classic, Main.screenShield
+        // todavía no existe cuando el shell habilita la extensión. Antes esto
+        // tiraba "TypeError: can't access property _setActive" y el shell la
+        // deshabilitaba sola. Esperamos a que aparezca, con un tope.
+        this._retries = 30;
+        this._startOrWait();
+    }
+
+    _startOrWait() {
+        if (Main.screenShield) {
+            this._retryId = 0;
+            unblank = new Unblank(this._settings);
+            unblank.enable();
+            enabled = true;
+            return;
+        }
+
+        if (this._retries-- <= 0) {
+            this._retryId = 0;
+            log('[unblank] Main.screenShield nunca apareció; queda inactiva');
+            return;
+        }
+
+        this._retryId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 1, () => {
+            if (Main.screenShield) {
+                this._retryId = 0;
+                unblank = new Unblank(this._settings);
+                unblank.enable();
+                enabled = true;
+                return GLib.SOURCE_REMOVE;
+            }
+            if (this._retries-- <= 0) {
+                this._retryId = 0;
+                log('[unblank] Main.screenShield nunca apareció; queda inactiva');
+                return GLib.SOURCE_REMOVE;
+            }
+            return GLib.SOURCE_CONTINUE;
+        });
     }
 
     disable() {
-        if (!Main.sessionMode.isLocked) {
+        if (this._retryId) {
+            GLib.source_remove(this._retryId);
+            this._retryId = 0;
+        }
+
+        if (!Main.sessionMode.isLocked && unblank) {
             unblank.disable();
             unblank = null
             enabled = false;
