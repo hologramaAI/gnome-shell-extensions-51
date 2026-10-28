@@ -203,6 +203,16 @@ python3 tools/diagnose.py
    cayendo en la siguiente. Separarlas en commits distintos da commits que
    mueren una línea después que el anterior.
 4. **Documentar en `PARCHE.md`**, con la plantilla del §8.
+4b. **Regenerar el registro**, que es lo que se consulta la próxima vez:
+
+   ```bash
+   python3 tools/registro.py
+   ```
+
+   Escribe `REGISTRO.md` con la versión del autor, nuestro último commit sobre
+   esa carpeta, qué archivos difieren de la copia literal y el estado medido.
+   Si mediste un estado nuevo, va antes en `estado.json` — con fecha y fuente.
+   Lo que no se midió no se escribe: una celda vacía es «no hay evidencia».
 5. **Instalar y verificar el archivo instalado**, no el `HEAD` (§4.1).
 6. **Re-login y `diagnose.py`.** Si queda en ERROR, el stack va crudo a
    `PARCHE.md` antes de tocar nada más.

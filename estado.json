@@ -1,0 +1,47 @@
+{
+  "_que_es": "Estado VERIFICADO por extensión y por nodo. Se escribe a mano, sólo con mediciones. registro.py lo vuelca en REGISTRO.md. Si no hay medición, la extensión no aparece: no se estima.",
+  "_como_se_mide": "En el nodo: python3 tools/diagnose.py (GetExtensionInfo por D-Bus). El estado es el número que devuelve el shell, no lo que diga el README del autor.",
+  "nodos": {
+    "trabajo": {
+      "medido": "2026-10-28",
+      "fuente": "tools/diagnose.py en la sesión viva",
+      "nota": "Máquina de referencia. No se actualizó igual que la laptop; corre GNOME Shell 51.1 con las extensiones sin parchear."
+    },
+    "laptop": {
+      "medido": "2026-10-28",
+      "fuente": "Hermes, rondas 5 y 6 (instalación verificada por grep del archivo instalado)",
+      "nota": "Pendiente el re-login del dueño: hasta que la sesión no se reinicie, el estado de carga en vivo no está medido."
+    }
+  },
+  "extensiones": {
+    "dash2dock-lite@icedman.github.com": {
+      "trabajo": {"estado": "ACTIVE", "nota": "corre sin parche: acá no hay dash-to-dock que le reemplace el dash"},
+      "laptop": {"estado": "instalado", "nota": "ab5eec9 aplicado y verificado con grep (líneas 222 y 753); falta re-login"}
+    },
+    "CoverflowAltTab@palatis.blogspot.com": {
+      "trabajo": {"estado": "INITIALIZED", "nota": "instalada y deshabilitada: nunca se cargó acá"},
+      "laptop": {"estado": "instalado", "nota": "29ff958 aplicado; falta re-login. Si carga sin viñeta, es el fallback y es lo esperado"}
+    },
+    "clipboard-indicator@tudmotu.com": {
+      "trabajo": {"estado": "ERROR", "nota": "TypeError: (intermediate value).get_default_backend is not a function — el parche de API no está instalado acá"}
+    },
+    "show-desktop-plus@attentivecoder": {
+      "trabajo": {"estado": "ACTIVE", "nota": "corre en 51.1 con el metadata sin tocar"}
+    },
+    "icon-switcher@mcoyle1960.jennaudio.com": {
+      "trabajo": {"estado": "ACTIVE", "nota": "corre en 51.1 con el metadata sin tocar"}
+    },
+    "sysmonitor@talhasiddique7": {
+      "trabajo": {"estado": "ACTIVE", "nota": "ya declaraba 51"}
+    },
+    "unblank@sun.wxg@gmail.com": {
+      "trabajo": {"estado": "ACTIVE", "nota": "ya declaraba 51; el parche de Main.screenShield no está instalado acá"}
+    },
+    "legacyschemeautoswitcher@joshimukul29.gmail.com": {
+      "trabajo": {"estado": "ACTIVE", "nota": "ya declaraba 51"}
+    },
+    "desktop-widgets@NiffirgkcaJ.github.com": {
+      "trabajo": {"estado": "INITIALIZED", "nota": "instalada y deshabilitada: nunca se cargó en ninguna de las dos máquinas"}
+    }
+  }
+}

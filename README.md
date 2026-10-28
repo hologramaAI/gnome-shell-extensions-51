@@ -61,6 +61,13 @@ python3 tools/diagnose.py           # el diagnóstico completo, con journal
 | `tools/install.py` | copia, respalda fuera del directorio escaneado |
 | `tools/snapshot.py` | regenera `main` desde lo instalado |
 | `tools/bump_shell_version.py` | agrega la major actual a todos los `metadata.json` |
+| `tools/registro.py` | regenera `REGISTRO.md`: versión del autor, nuestro último cambio y estado medido |
+
+`REGISTRO.md` es la tabla que se consulta antes de tocar nada: qué versión del
+autor hay, en qué fecha y con qué commit la tocamos nosotros, qué archivos
+diferencia de la copia literal, y en qué estado está en cada nodo. Se regenera
+con `tools/registro.py`; el estado se mide, no se estima — vive en `estado.json`
+con fecha y fuente, y lo que no se midió no aparece.
 
 `install.py` hace respaldo de la carpeta que reemplaza y no toca ninguna
 extensión que no esté en `extensions/`. Los respaldos van a
