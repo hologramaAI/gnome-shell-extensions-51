@@ -265,6 +265,14 @@ python3 tools/bump_shell_version.py
 Si el rebase da conflicto en una guarda, **eso es información**: significa que el
 autor tocó justo ese punto. Se resuelve leyendo su cambio, no descartándolo.
 
+Si el conflicto es en **`REGISTRO.md`**, no es información: es un archivo
+generado y va a chocar en cada paso de parche de `desarrollo` a `cachyos-51`. Se
+regenera, no se resuelve a mano:
+
+```bash
+python3 tools/registro.py && git add REGISTRO.md && git rebase --continue
+```
+
 `UPSTREAM.json` guarda el `tree_sha256`, la versión, el `pk` de
 extensions.gnome.org y qué versiones de shell publicó el autor. Sirve para
 demostrar qué se copió y cuándo, y para saber si ya sacó release.
