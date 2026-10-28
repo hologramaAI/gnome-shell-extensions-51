@@ -61,7 +61,7 @@ autor publique algo nuevo. Todo cambio nuestro vive en `cachyos-51` o en
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 51 | **estable**: sin cambios, ya declaraba 51 |
 | `clipboard-indicator@tudmotu.com` | 71 | 50 | **literal** acá: el arreglo de `get_default_backend` vive en `desarrollo` |
 | `unblank@sun.wxg@gmail.com` | 41 | 51 | **literal** acá: el reintento de `screenShield` vive en `desarrollo` |
-| `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | **literal** acá: el fallback de `GLSLEffect` vive en `desarrollo` (y todavía no carga) |
+| `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | **literal** acá: el fallback de `GLSLEffect` vive en `desarrollo`, registra la clase pero falta el re-login |
 | `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 50 | **literal**: nunca se cargó en ninguna máquina |
 
 «Literal» significa que en la estable esa extensión está **exactamente** como la

@@ -16,26 +16,53 @@ hay medición, va marcado como *sin verificar*.
 | §1 (parcial) | `CoverflowAltTab`, `clipboard-indicator`, `desktop-widgets` | en prueba | `desarrollo` |
 | §2 | `unblank` | **sin verificar** | `desarrollo` |
 | §3 | `clipboard-indicator` | **sin verificar** | `desarrollo` |
-| §5 | `CoverflowAltTab` | **roto** — carga la clase y GObject rechaza el vfunc | `desarrollo` |
+| §5 | `CoverflowAltTab` | registro de la clase **verificado** acá; falta el re-login en la laptop | `desarrollo` |
 
 **Sólo lo verificado está en `cachyos-51`.** Lo demás vive en `desarrollo` y no
 se instala. El porqué está en el README: un `metadata.json` sin su parche de
 código hace que el shell **cargue** la extensión rota en vez de dejarla fuera de
 juego.
 
-### §5 sigue roto — error nuevo, medido
+### §5 · la segunda rotura del mismo punto, medida y ya reparada
 
-El fallback a `Clutter.OffscreenEffect` carga la clase, pero GObject la rechaza:
+El primer parche cambió la clase base pero dejó el `vfunc_build_pipeline`
+declarado, y GObject lo rechaza al registrar la clase:
 
 ```
 Could not find definition of virtual function build_pipeline
 ```
 
 `build_pipeline` es vfunc de `Shell.GLSLEffect`, no de `Clutter.OffscreenEffect`.
-Mi parche cambió la clase base pero dejó el `vfunc_build_pipeline` declarado, y
-en GObject una vfunc que la clase base no tiene es un error de registro, no un
-aviso. Arreglo: cuando `HAS_GLSL_EFFECT` es falso **no** declarar ese método. Sin
-`GLSLEffect` la viñeta ya es una pérdida asumida, así que no se pierde nada más.
+En GObject una vfunc que la clase base no tiene **aborta el registro**: no es un
+aviso que se pueda ignorar en runtime.
+
+Cambio: el cuerpo de la clase se declara aparte y el `vfunc_build_pipeline` se
+agrega al prototipo **sólo si** `Shell.GLSLEffect` existe. Sin `GLSLEffect` la
+viñeta ya es una pérdida asumida, así que no se pierde nada más.
+
+Verificado en el nodo `trabajo` con gjs, sin sesión y en las dos direcciones:
+
+```
+# la forma vieja reproduce el error exacto de la laptop
+gjs -m tools/pruebas/radialShader-roto.js
+→ Error: Could not find definition of virtual function build_pipeline
+
+# la forma nueva registra e instancia con la clase base de reemplazo
+gjs -m tools/pruebas/radialShader-ok.js
+→ Shell.GLSLEffect presente: false
+  registrada: RadialShaderEffectBody
+  instanciada: brightness=1
+```
+
+Los dos scripts quedan en `tools/pruebas/` para que la comparación se repita sin
+reescribirlos.
+
+Las dos corridas necesitan `GI_TYPELIB_PATH` **y** `LD_LIBRARY_PATH` apuntando a
+`/usr/lib/mutter-51:/usr/lib/gnome-shell`; sin la segunda, la librería de Clutter
+no carga y `Clutter.OffscreenEffect` se resuelve como `void`.
+
+Sin verificar: que la extensión entera cargue en una sesión real con el shell
+51.1 — eso lo dice el re-login en la laptop, no esta prueba.
 
 ## 1 · `shell-version` += `"51"` en el metadata
 

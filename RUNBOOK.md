@@ -115,6 +115,27 @@ Todo lo que rompió hasta hoy cae en una de tres clases. El síntoma las separa:
   no-op en vez de dejar que reviente el import (fue el caso de la viñeta de
   `CoverflowAltTab`).
 
+**Probar el registro de una clase sin abrir sesión.** Cuando el parche cambia la
+clase base de un `GObject.registerClass`, el registro se puede medir solo, en
+gjs, antes de instalar nada:
+
+```bash
+GI_TYPELIB_PATH=/usr/lib/mutter-51:/usr/lib/gnome-shell \
+LD_LIBRARY_PATH=/usr/lib/mutter-51:/usr/lib/gnome-shell \
+gjs -m tools/pruebas/radialShader-roto.js
+```
+
+Las **dos** variables son obligatorias. Con sólo `GI_TYPELIB_PATH`, la librería
+de Clutter no carga (`Failed to load shared library 'libmutter-clutter-51.so.0'`)
+y `Clutter.OffscreenEffect` se resuelve como `void`, así que el error que se ve
+es del arnés, no del parche. Y el script va con `-m`: sin eso, `import` es un
+`SyntaxError`.
+
+Sirve para lo que el journal no distingue: correr la forma vieja (reproduce el
+error exacto) y la nueva (registra) y comparar. Un `Could not find definition of
+virtual function X` significa que la vfunc no existe en la clase base — se
+declara condicionalmente, no se ignora.
+
 ### Clase C — convivencia (dos extensiones pelean por el mismo objeto)
 
 - Estado `3` con `can't access property "X", … is undefined` / `is null`, donde

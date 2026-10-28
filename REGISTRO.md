@@ -14,11 +14,11 @@ Regla: **lo que no se midió no aparece**. Una celda vacía significa
 |---|---|---|---|---|---|
 | `CoverflowAltTab@palatis.blogspot.com` | 88 | 50 | 2026-10-28 | sin parche | — |
 | `clipboard-indicator@tudmotu.com` | 71 | 46, 47, 48, 49, 50 | 2026-10-28 | sin parche | — |
-| `dash2dock-lite@icedman.github.com` | 92 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `b740cb4` 2026-10-28 | extension.js, metadata.json |
+| `dash2dock-lite@icedman.github.com` | 92 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | extension.js, metadata.json |
 | `desktop-widgets@NiffirgkcaJ.github.com` | 4 | 46, 47, 48, 49, 50 | 2026-10-28 | sin parche | — |
-| `icon-switcher@mcoyle1960.jennaudio.com` | 4 | 47, 48, 49, 50 | 2026-10-28 | `b740cb4` 2026-10-28 | metadata.json |
+| `icon-switcher@mcoyle1960.jennaudio.com` | 4 | 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | metadata.json |
 | `legacyschemeautoswitcher@joshimukul29.gmail.com` | 13 | 45, 46, 47, 48, 49, 50, 51 | 2026-10-28 | sin parche | — |
-| `show-desktop-plus@attentivecoder` | 8 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `b740cb4` 2026-10-28 | metadata.json |
+| `show-desktop-plus@attentivecoder` | 8 | 45, 46, 47, 48, 49, 50 | 2026-10-28 | `6e8e122` 2026-10-28 | metadata.json |
 | `sysmonitor@talhasiddique7` | 10 | 45, 46, 47, 48, 49, 50, 51 | 2026-10-28 | sin parche | — |
 | `unblank@sun.wxg@gmail.com` | 41 | 50, 51 | 2026-10-28 | sin parche | — |
 
