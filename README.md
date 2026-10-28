@@ -48,8 +48,11 @@ python3 tools/install.py            # copia a ~/.local/share/gnome-shell/extensi
 python3 tools/status.py             # muestra el estado real de cada una
 ```
 
-`install.py` hace respaldo de la carpeta que reemplaza (`<uuid>.bak-<fecha>`) y
-no toca ninguna extensión que no esté en `extensions/`.
+`install.py` hace respaldo de la carpeta que reemplaza y no toca ninguna
+extensión que no esté en `extensions/`. Los respaldos van a
+`~/.local/share/gnome-shell-extension-backups/`, **fuera** del directorio de
+extensiones: si quedan adentro, gnome-shell los escanea y llena el journal de
+`UUID does not match directory name` en cada arranque.
 
 Después de instalar hay que **cerrar sesión y volver a entrar**: en Wayland no
 existe `Alt+F2` → `r`, y reiniciar el shell implica cerrar sesión.
