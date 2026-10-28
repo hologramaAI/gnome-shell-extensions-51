@@ -10,6 +10,11 @@ descarta toda extensión cuyo `metadata.json` no declare `"51"` — aunque el
 código funcione perfectamente. El proveedor no ofrece alternativa, así que la
 generamos nosotros.
 
+**Si algo se rompió:** `python3 tools/diagnose.py` y después `RUNBOOK.md`. Ahí
+está el procedimiento completo — qué mirar en qué orden, cómo distinguir una
+falla de versión de una de API y de una de convivencia entre extensiones, cómo
+aislar una extensión para probarla sola, y cómo dejar el parche.
+
 ## Las dos ramas
 
 | Rama | Qué es | Cuándo usarla |
@@ -45,8 +50,17 @@ Cada carpeta trae `UPSTREAM.json` con el uuid, la versión, la URL del autor, el
 git clone -b cachyos-51 <url-de-este-repo>
 cd gnome-shell-extensions-51
 python3 tools/install.py            # copia a ~/.local/share/gnome-shell/extensions
-python3 tools/status.py             # muestra el estado real de cada una
+python3 tools/status.py             # estado por extensión, tabla corta
+python3 tools/diagnose.py           # el diagnóstico completo, con journal
 ```
+
+| Herramienta | Para qué |
+|---|---|
+| `tools/diagnose.py` | todo el estado en una pasada: entorno, validación, D-Bus, journal, causas sembradas |
+| `tools/status.py` | tabla corta repo vs instalado |
+| `tools/install.py` | copia, respalda fuera del directorio escaneado |
+| `tools/snapshot.py` | regenera `main` desde lo instalado |
+| `tools/bump_shell_version.py` | agrega la major actual a todos los `metadata.json` |
 
 `install.py` hace respaldo de la carpeta que reemplaza y no toca ninguna
 extensión que no esté en `extensions/`. Los respaldos van a
