@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -24,6 +25,16 @@ DEFAULT_TARGET = Path.home() / ".local/share/gnome-shell/extensions"
 # escanea esa carpeta y cada copia produce un "UUID does not match directory
 # name" en el journal en cada arranque.
 DEFAULT_BACKUP = Path.home() / ".local/share/gnome-shell-extension-backups"
+
+
+def current_branch(repo: Path) -> str:
+    try:
+        return subprocess.run(
+            ["git", "-C", str(repo), "rev-parse", "--abbrev-ref", "HEAD"],
+            capture_output=True, text=True, timeout=10, check=False,
+        ).stdout.strip()
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return ""
 
 
 def load_extensions(repo: Path, only: set[str] | None) -> list[Path]:
@@ -72,7 +83,20 @@ def main() -> int:
     parser.add_argument("--backup-dir", default=DEFAULT_BACKUP, type=Path)
     parser.add_argument("--only", default=None, help="lista de uuid separados por coma")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--forzar", action="store_true",
+                        help="instalar aunque estés en `main`")
     args = parser.parse_args()
+
+    # `main` es la copia literal del autor: instalar desde ahí deja las
+    # extensiones sin parche y el síntoma vuelve a ser "no carga". Se avisa
+    # antes de tocar el directorio del usuario, no después.
+    if current_branch(args.repo) == "main" and not args.forzar:
+        raise SystemExit(
+            "estás en `main`, la copia literal del autor: esto instalaría las\n"
+            "extensiones SIN parchear.\n"
+            "  git checkout cachyos-51 && python3 tools/install.py\n"
+            "Si de verdad querés la literal, agregá --forzar."
+        )
 
     only = {u.strip() for u in args.only.split(",")} if args.only else None
     extensions = load_extensions(args.repo, only)
