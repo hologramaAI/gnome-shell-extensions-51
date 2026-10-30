@@ -3,8 +3,10 @@ import GObject from 'gi://GObject'
 import Cogl from 'gi://Cogl'
 import Clutter from 'gi://Clutter'
 
-// GNOME 51 eliminó Shell.GLSLEffect. Si no está, la viñeta se vuelve un
-// efecto no-op en vez de tumbar la extensión al importar el módulo.
+import {defineVfunc} from './snippet.js'
+
+// GNOME 51 eliminó Shell.GLSLEffect. La viñeta pasa a Clutter.ShaderEffect
+// con vfunc_get_static_snippet, igual que RadialShaderEffect en ui/lightbox.js.
 const HAS_GLSL_EFFECT = typeof Shell.GLSLEffect === 'function';
 
 const VIGNETTE_DECLARATIONS = '                                              \
@@ -23,9 +25,7 @@ float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);            \n\
 cogl_color_out.a *= 1.0 - pixel_brightness * brightness;                   \n\
 cogl_color_out.a += (rand(position) - 0.5) / 100.0;                        \n';
 
-const EffectBase = HAS_GLSL_EFFECT ? Shell.GLSLEffect : Clutter.OffscreenEffect;
-
-class RadialShaderEffectBody extends EffectBase {
+class RadialShaderEffectBody extends (HAS_GLSL_EFFECT ? Shell.GLSLEffect : Clutter.ShaderEffect) {
     constructor(params) {
         super(params);
         this._brightness = undefined;
@@ -40,6 +40,13 @@ class RadialShaderEffectBody extends EffectBase {
         this.sharpness = 0.0;
     }
 
+    _setUniform(location, name, value) {
+        if (HAS_GLSL_EFFECT)
+            this.set_uniform_float(location, 1, [value]);
+        else
+            this.set_uniform_float(name, 1, [value]);
+    }
+
     get brightness() {
         return this._brightness;
     }
@@ -48,9 +55,7 @@ class RadialShaderEffectBody extends EffectBase {
         if (this._brightness === v)
             return;
         this._brightness = v;
-        if (HAS_GLSL_EFFECT)
-            this.set_uniform_float(this._brightnessLocation,
-                1, [this._brightness]);
+        this._setUniform(this._brightnessLocation, 'brightness', v);
         this.notify('brightness');
     }
 
@@ -62,22 +67,28 @@ class RadialShaderEffectBody extends EffectBase {
         if (this._sharpness === v)
             return;
         this._sharpness = v;
-        if (HAS_GLSL_EFFECT)
-            this.set_uniform_float(this._sharpnessLocation,
-                1, [this._sharpness]);
+        this._setUniform(this._sharpnessLocation, 'vignette_sharpness', v);
         this.notify('sharpness');
     }
 }
 
-// `build_pipeline` es vfunc de Shell.GLSLEffect, no de Clutter.OffscreenEffect.
-// Declararla sobre una clase base que no la tiene no es un aviso: GObject
-// aborta el registro con "Could not find definition of virtual function".
-// Por eso se agrega sólo cuando la clase base real la ofrece.
+// Cada vfunc se declara sólo sobre la clase base que la tiene: en GObject una
+// vfunc desconocida aborta el registro de la clase (PARCHE §5).
 if (HAS_GLSL_EFFECT) {
     RadialShaderEffectBody.prototype.vfunc_build_pipeline = function () {
         this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT,
             VIGNETTE_DECLARATIONS, VIGNETTE_CODE, true);
     };
+} else {
+    let snippet = null;
+    defineVfunc(RadialShaderEffectBody, 'vfunc_get_static_snippet', function () {
+        if (snippet === null) {
+            snippet = Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT,
+                VIGNETTE_DECLARATIONS, null);
+            snippet.set_replace(VIGNETTE_CODE);
+        }
+        return snippet;
+    });
 }
 
 export const MyRadialShaderEffect = GObject.registerClass({

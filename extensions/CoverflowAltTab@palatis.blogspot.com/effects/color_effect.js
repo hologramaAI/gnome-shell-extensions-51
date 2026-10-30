@@ -7,6 +7,8 @@ import Shell from 'gi://Shell';
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 
+import {HAS_SHADER_SOURCE, withStaticSnippet} from './snippet.js';
+
 const SHADER_PATH = GLib.filename_from_uri(GLib.uri_resolve_relative(import.meta.url, 'color_effect.glsl', GLib.UriFlags.NONE))[0];
 
 const get_shader_source = _ => {
@@ -63,7 +65,7 @@ export const ColorEffect = new GObject.registerClass({
             0.4,
         ),
     }
-}, class CoverflowAltTabColorShader extends Clutter.ShaderEffect {
+}, withStaticSnippet(class CoverflowAltTabColorShader extends Clutter.ShaderEffect {
     constructor(params) {
         let _color = params.color;
         delete params.color;
@@ -76,7 +78,7 @@ export const ColorEffect = new GObject.registerClass({
         // set shader source
         this._source = get_shader_source();
 
-        if (this._source)
+        if (this._source && HAS_SHADER_SOURCE)
             this.set_shader_source(this._source);
 
         // set shader color
@@ -158,7 +160,8 @@ export const ColorEffect = new GObject.registerClass({
 
 
     vfunc_paint_target(paint_node = null, paint_context = null) {
-        this.set_uniform_value("tex", 0);
+        if (HAS_SHADER_SOURCE)
+            this.set_uniform_value("tex", 0);
 
         if (paint_node && paint_context)
             super.vfunc_paint_target(paint_node, paint_context);
@@ -167,4 +170,4 @@ export const ColorEffect = new GObject.registerClass({
         else
             super.vfunc_paint_target();
     }
-});
+}, get_shader_source));

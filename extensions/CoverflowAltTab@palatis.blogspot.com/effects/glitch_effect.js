@@ -7,6 +7,8 @@ import Shell from 'gi://Shell';
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 
+import {HAS_SHADER_SOURCE, withStaticSnippet} from './snippet.js';
+
 
 const SHADER_PATH = GLib.filename_from_uri(GLib.uri_resolve_relative(import.meta.url, 'glitch_effect.glsl', GLib.UriFlags.NONE))[0];
 
@@ -30,14 +32,14 @@ const get_shader_source = _ => {
 /// https://gjs-docs.gnome.org/clutter10~10_api/clutter.shadereffect
 export const GlitchEffect = new GObject.registerClass({
     GTypeName: "CoverflowAltTabGlitchEffect",
-}, class CoverflowAltTabGlitchShader extends Clutter.ShaderEffect {
+}, withStaticSnippet(class CoverflowAltTabGlitchShader extends Clutter.ShaderEffect {
     constructor(params) {
         super(params);
         this._timeOffset = Math.random() * 1000000;
         // set shader source
         this._source = get_shader_source();
 
-        if (this._source)
+        if (this._source && HAS_SHADER_SOURCE)
             this.set_shader_source(this._source);
 
         this.set_enabled(true);
@@ -46,7 +48,8 @@ export const GlitchEffect = new GObject.registerClass({
     vfunc_paint_target(paint_node = null, paint_context = null) {
         const time = this._timeOffset + GLib.get_monotonic_time() / GLib.USEC_PER_SEC;
         this.set_uniform_value("time", time);
-        this.set_uniform_value("tex", 0);
+        if (HAS_SHADER_SOURCE)
+            this.set_uniform_value("tex", 0);
 
         if (paint_node && paint_context)
             super.vfunc_paint_target(paint_node, paint_context);
@@ -57,4 +60,4 @@ export const GlitchEffect = new GObject.registerClass({
 
         this.queue_repaint();
     }
-});
+}, get_shader_source));
